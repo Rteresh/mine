@@ -4,11 +4,12 @@ import pygame
 class Combine:
     """Класс для управления комбайном"""
 
-    def __init__(self, mine_screen, conveer, settings):
+    def __init__(self, mine_screen, conveer, settings, crep):
         """Инициализация коробля и начальной позиции"""
         self.screen = mine_screen
         self.screen_rect = mine_screen.get_rect()
         self.combine_settings = settings
+        self.crep = crep
 
         #      Zagruzka photo combine
 
@@ -19,7 +20,8 @@ class Combine:
         # Evry new combine set bottom
         # С левого края
 
-        self.rect.x = float(self.screen_rect.left + self.rect.centerx)
+        # self.rect.x = float(self.screen_rect.left + self.rect.centerx)
+        self.rect.x = 0
         self.rect.y = float(conveer.rect.y - self.rect.height)
 
         self.centerx = float(self.rect.x)
@@ -30,9 +32,22 @@ class Combine:
 
     def update(self):
         """Обновление позиции комбана"""
-        if self.moving_right:
+        if self.moving_right and self.rect.right < self.screen_rect.right:
             self.centerx += self.combine_settings.combine_speed
-        if self.moving_left:
+            self.combine_settings.combine_direction = 1
+            self.check_position()
+            print(self.rect.centerx)
+            print(f'{self.combine_settings.combine_direction} направление комбайна')
+        if self.moving_left and self.rect.left > self.screen_rect.left:
             self.centerx -= self.combine_settings.combine_speed
+            self.combine_settings.combine_direction = 0
+            self.check_position()
+            print(self.rect.centerx)
+            print(f'{self.combine_settings.combine_direction} направление комбайна')
 
         self.rect.centerx = self.centerx
+
+    def check_position(self):
+        """Определеят позицию комбайна по эндкодору"""
+        self.combine_settings.combine_position = int(self.rect.centerx / self.crep.rect.width)
+        print(f"позиция комбайна: {self.combine_settings.combine_position}")
