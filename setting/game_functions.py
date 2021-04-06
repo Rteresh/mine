@@ -18,6 +18,7 @@ def check_events(combine, screen, mine_settings, crep, conveer):
 def update_screen(combine, screen, mine_settings, crep, conveer, creps):
     combine.blitme()
     for one_crep in creps:
+        print(f'{one_crep.number} to {one_crep.rect.x} new ')
         one_crep.blitme()
 
 
@@ -39,11 +40,7 @@ def create_all_creps(settings, screen, first_crep, creps):
     amount_creps = int((settings.screen_width - 100) / first_crep.rect.width)
     creps.append(first_crep)
     for i in range(amount_creps):
-        new_crep = Crep(screen, settings, i)
-        new_crep.update(creps[i - 1].rect.x + new_crep.rect.width)
+        new_crep = Crep(screen, settings, i + 1)
+        new_crep.update(creps[i].rect.x + new_crep.rect.width)
         creps.append(new_crep)
-        new_crep.blitme()
     print(len(creps))
-
-
-

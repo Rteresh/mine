@@ -27,12 +27,13 @@ class Crep:
         self.text_image = self.font.render(str(number), True, self.text_color, self.crep_settings.bg_color)
         self.text_image_rect = self.text_image.get_rect()
 
-        self.text_image_rect.centerx = self.rect.centerx + 5
-        self.text_image_rect.centery = self.rect.centery + 5
+        self.text_image_rect.x = self.rect.centerx
+        self.text_image_rect.y = self.rect.centery
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
-        self.screen.blit(self.text_image, self.rect)
+        self.screen.blit(self.text_image, self.text_image_rect)
 
     def update(self, new_rect):
         self.rect.x = new_rect
+        self.text_image_rect.x = self.rect.centerx-10
