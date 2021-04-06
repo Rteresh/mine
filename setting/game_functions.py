@@ -15,8 +15,10 @@ def check_events(combine, screen, mine_settings, crep, conveer):
             moving_combine_keyup(event, combine)
 
 
-def update_screen(combine, screen, mine_settings, crep, conveer):
+def update_screen(combine, screen, mine_settings, crep, conveer, creps):
     combine.blitme()
+    for one_crep in creps:
+        one_crep.blitme()
 
 
 def moving_combine(event, combine, screen, mine_settings):
@@ -33,7 +35,15 @@ def moving_combine_keyup(event, combine):
         combine.moving_left = False
 
 
-def create_crep(settings, screen, crep, crep_number, row_number, creps):
-    crep = Crep(screen, settings)
-    crep.x = crep.x.width
-    creps.append(crep)
+def create_all_creps(settings, screen, first_crep, creps):
+    amount_creps = int((settings.screen_width - 100) / first_crep.rect.width)
+    creps.append(first_crep)
+    for i in range(amount_creps):
+        new_crep = Crep(screen, settings, i)
+        new_crep.update(creps[i - 1].rect.x + new_crep.rect.width)
+        creps.append(new_crep)
+        new_crep.blitme()
+    print(len(creps))
+
+
+

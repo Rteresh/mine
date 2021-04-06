@@ -12,15 +12,16 @@ def run_game():
     setting = Settings()
     screen = pygame.display.set_mode((setting.screen_width, setting.screen_height))
     pygame.display.set_caption(setting.screen_name)
-    crep = Crep(screen, setting)
+    crep = Crep(screen, setting, 1)
     conveer = Conveer(screen, setting, crep)
     combine = Combine(screen, conveer, setting)
+    creps = []
+    gf.create_all_creps(setting, screen, crep, creps)
     """Запуск основного цикла игры"""
     while True:
         gf.check_events(combine, screen, setting, crep, conveer)
         screen.fill(setting.bg_color)
-        gf.update_screen(combine, screen, setting, crep, conveer)
-        crep.blitme()
+        gf.update_screen(combine, screen, setting, crep, conveer, creps)
         conveer.blitme()
         combine.update()
         # Отслеживание событий  на экране,клавиатуры и мыши
