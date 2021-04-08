@@ -36,18 +36,13 @@ class Combine:
             self.centerx += self.combine_settings.combine_speed
             self.combine_settings.combine_direction = 1
             self.check_position()
-            print(self.rect.centerx)
-            print(f'{self.combine_settings.combine_direction} направление комбайна')
+            self.rect.x = self.centerx
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.centerx -= self.combine_settings.combine_speed
             self.combine_settings.combine_direction = 0
             self.check_position()
-            print(self.rect.centerx)
-            print(f'{self.combine_settings.combine_direction} направление комбайна')
-
-        self.rect.centerx = self.centerx
+            self.rect.x = self.centerx
 
     def check_position(self):
         """Определеят позицию комбайна по эндкодору"""
         self.combine_settings.combine_position = int(self.rect.centerx / self.crep.rect.width)
-        print(f"позиция комбайна: {self.combine_settings.combine_position}")

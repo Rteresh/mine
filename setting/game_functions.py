@@ -23,7 +23,6 @@ def update_screen(combine, screen, mine_settings, crep, conveer, creps, conveers
     for one_crep in creps:
         one_crep.blitme()
     RSQ(mine_settings, creps, conveers)
-    print(f"position  {mine_settings.combine_position}")
 
 
 def moving_combine(event, combine, screen, mine_settings):
@@ -64,8 +63,7 @@ def check_position_combine(settings, creps, combine):
 
 
 def RSQ(settings, creps, conveers):
-    num = int(settings.combine_position / settings.distance_between_crep_comb)
-    print(f"сейчас должна поехать {num}")
-    if creps[num - 1].rect.top > conveers[num - 1].rect.centery:
-        for i in range(10):
-            creps[num - 1].update_y()
+    # последняя секция едет, потому что
+    num = int(settings.combine_position - settings.distance_between_crep_comb)
+    if settings.combine_position >= settings.distance_between_crep_comb+1 and creps[num - 1].rect.top > conveers[num - 1].rect.centery:
+        creps[num - 1].update_y()

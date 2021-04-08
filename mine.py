@@ -1,11 +1,10 @@
 import sys
-import pygame
 from setting.settings import Settings
 from mine_objects.combine import Combine
 from mine_objects.crep import Crep
 from mine_objects.conveer import Conveer
 import setting.game_functions as gf
-
+import pygame
 
 def run_game():
     pygame.init()
