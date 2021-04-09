@@ -12,6 +12,10 @@ class Combine:
         self.crep = crep
 
         #      Zagruzka photo combine
+        # 0 = left 1 = right
+        self.direction = 1
+        # 0 = left 1 = right
+        self.check_point = 0
 
         self.image = pygame.image.load('templates/combine.jpg')
         self.rect = self.image.get_rect()
@@ -21,7 +25,7 @@ class Combine:
         # С левого края
 
         # self.rect.x = float(self.screen_rect.left + self.rect.centerx)
-        self.rect.x = 0
+        self.rect.x = 700
         self.rect.y = float(conveer.rect.y - self.rect.height)
 
         self.centerx = float(self.rect.x)
@@ -34,15 +38,27 @@ class Combine:
         """Обновление позиции комбана"""
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.centerx += self.combine_settings.combine_speed
-            self.combine_settings.combine_direction = 1
+            self.direction = 1
             self.check_position()
             self.rect.x = self.centerx
+            print(f"направление вправо {self.direction} ")
+
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.centerx -= self.combine_settings.combine_speed
-            self.combine_settings.combine_direction = 0
+            self.direction = 0
             self.check_position()
             self.rect.x = self.centerx
+            print(f"направление влево {self.direction}")
 
     def check_position(self):
         """Определеят позицию комбайна по эндкодору"""
         self.combine_settings.combine_position = int(self.rect.centerx / self.crep.rect.width)
+
+    def update_y(self, new_pos):
+        self.rect.y = new_pos
+
+    def new_check_point(self):
+        if self.rect.x == self.screen_rect.x:
+            self.check_point = 0
+        elif self.rect.right == self.screen_rect.right:
+            self.check_point = 1

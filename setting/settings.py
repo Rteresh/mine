@@ -7,12 +7,14 @@ class Settings:
         self.screen_height = 800
         self.bg_color = (255, 255, 255)
         self.distance_between_crep_comb = 6
+        self.start_end = 1
+
 
         # Настройки комбайна
         self.combine_speed = 0.1
-        # 0 = left 1 = right
-        self.combine_direction = 1
+
         self.combine_position = int(0)
+        # Esli дошел до последней точки = 1, до первой = 0
 
         # Настройки секции
-        self.crep_speed = 0.1
+        self.crep_speed = 0.15
