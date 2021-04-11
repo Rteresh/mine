@@ -25,7 +25,7 @@ class Combine:
         # С левого края
 
         # self.rect.x = float(self.screen_rect.left + self.rect.centerx)
-        self.rect.x = 700
+        self.rect.x = 0
         self.rect.y = float(conveer.rect.y - self.rect.height)
 
         self.centerx = float(self.rect.x)
@@ -41,14 +41,12 @@ class Combine:
             self.direction = 1
             self.check_position()
             self.rect.x = self.centerx
-            print(f"направление вправо {self.direction} ")
 
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.centerx -= self.combine_settings.combine_speed
             self.direction = 0
             self.check_position()
             self.rect.x = self.centerx
-            print(f"направление влево {self.direction}")
 
     def check_position(self):
         """Определеят позицию комбайна по эндкодору"""
@@ -62,3 +60,10 @@ class Combine:
             self.check_point = 0
         elif self.rect.right == self.screen_rect.right:
             self.check_point = 1
+
+    def rock_cleanup(self):
+        """Начинает зачисчаться и старт автоматики"""
+        if self.combine_settings.combine_position == self.combine_settings.comb_to_start_PSQ:
+            self.combine_settings.start_PSQ_1 = 1
+
+

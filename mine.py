@@ -21,7 +21,7 @@ def run_game():
     mf.create_all_conveers(setting, screen, conveer, conveers, creps)
     """Запуск основного цикла игры"""
     while True:
-        mf.check_events(combine, screen, setting, crep, conveer, creps)
+        mf.check_events(combine, screen, setting, crep, conveer, creps, conveers)
         screen.fill(setting.bg_color)
         mf.update_screen(combine, screen, setting, crep, conveer, creps, conveers)
         combine.update()
