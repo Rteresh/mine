@@ -15,11 +15,11 @@ class Conveer:
         self.rect.x = crep.rect.x
         self.rect.y = crep.rect.y - self.rect.height
 
+        self.y = float(self.rect.y)
         self.x = float(self.rect.x)
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
 
-    def update(self):
-        pass
-
+    def update_y(self):
+        self.y -= self.

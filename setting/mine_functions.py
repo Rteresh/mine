@@ -86,19 +86,14 @@ def check_position_combine(settings, creps, combine):
 
 
 def start_automatic(settings, combine, creps, conveers):
-    if settings.combine_position == settings.num_comb_to_crep_to_start_PSQ1:
-        start_any_PSQ(combine, settings.status_PSQ1)
-    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ2:
-        if combine.check_point == 1 and combine.direction == 0:
-            settings.status_PSQ2 = True
-    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ3:
-        if combine.check_point == 1 and combine.direction == 0:
-            pass
+    check_automatic(settings, combine)
     start_PSQ1(settings, creps, conveers)
     start_PSQ2(settings, creps, conveers)
+    start_PSQ3(settings, creps, conveers)
 
 
 def start_PSQ1(settings, creps, conveers):
+    """Запуск передвижки секции на конецевых участках"""
     if settings.status_PSQ1 and settings.done_PSQ1:
         i = -settings.start_end_PSQ1
         end_PSQ1 = (len(creps)) - settings.num_comb_to_crep_to_start_PSQ1
@@ -113,6 +108,7 @@ def start_PSQ1(settings, creps, conveers):
 
 
 def start_PSQ2(settings, creps, conveers):
+    """Запуск передвижки секций определенно заданой в группе """
     if settings.status_PSQ2 and settings.done_PSQ2:
         i = settings.start_end_PSQ2
         if creps[i].rect.top > conveers[i].rect.centery:
@@ -125,10 +121,41 @@ def start_PSQ2(settings, creps, conveers):
                 settings.end_PSQ2 = 1
 
 
-def start_PSQ3(settings, combine, creps, conveers):
+def start_PSQ3(settings, creps, conveers):
+    """Запуск передвижки секции относительно комбайна"""
+    if settings.status_PSQ3:
+        i = settings.combine_position - settings.distance_between_crep_comb_PSQ
+        if creps[i].rect.top > conveers[i].rect.centery:
+            creps[i].update_y()
+
+
+def start_DA1(settings, creps, converrs):
+    """Запуск передвижки конвейера, не включая концевых операций"""
+    if settings.status_DA1:
+        i = settings.status_DA1 - 1
+        if converrs[i].rect
+
+
+def start_DA2(settings, creps, conveers):
+    """Запуск передвижки конвейера, установка косого заезда"""
     pass
 
 
-def start_any_PSQ(combine, status_PSQ):
-    if combine.direction == 0 and combine.check_point == 1:
-        status_PSQ = True
+def start_DA3(settings, creps, conveers):
+    """Запуск передвжики конвейера,концевые операции"""
+    pass
+
+
+def check_automatic(settings, combine):
+    if settings.combine_position == settings.num_comb_to_crep_to_start_PSQ1:
+        if combine.check_point == 1 and combine.direction == 0:
+            settings.status_PSQ1 = True
+    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ2:
+        if combine.check_point == 1 and combine.direction == 0:
+            settings.status_PSQ2 = True
+    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ3:
+        if combine.check_point == 1 and combine.direction == 0:
+            settings.status_PSQ3 = True
+    if settings.combine_position == settings.distance_between_crep_comb_DA1:
+        if combine.check_point == 0 and combine.direction == 1:
+            settings.status_DA1 = True
