@@ -10,12 +10,21 @@ class Settings:
         self.start_end = 1
 
         # Настройка автоматического режима
-
-        self.start_PSQ_1 = 0  # 1 start 0 off
-        self.num_crep_to_start_end_PSQ = 18
-        self.comb_to_start_PSQ = 17
-        self.crep_to_check_position = 9
-
+        # PSQ1
+        self.start_end_PSQ1 = 1
+        self.status_PSQ1 = False  # True ON False OFF
+        self.done_PSQ1 = True  # True NO WORK False DONE
+        self.num_comb_to_crep_to_start_PSQ1 = 16  # До какой секции должен доехать, чтобы включить PSQ1
+        # PSQ2
+        self.status_PSQ2 = False  # True ON False OFF
+        self.done_PSQ2 = True  # True NO WORK False DONE
+        self.num_comb_to_crep_to_start_PSQ2 = 20  # До какой секции должен доехать,чтобы включить PSQ2
+        self.amount_crep_PSQ2 = 10
+        self.start_end_PSQ2 = 18  # Начало с какой секции должно пойти
+        self.end_PSQ2 = self.start_end_PSQ2 - self.amount_crep_PSQ2
+        #PSQ3
+        self.start_end_PSQ3 = 1
+        self.num_comb_to_crep_to_start_PSQ3 = 11
         # Настройки комбайна
         self.combine_speed = 0.3
 
@@ -23,6 +32,9 @@ class Settings:
         # Esli дошел до последней точки = 1, до первой = 0
 
         # Настройки секции
-        self.crep_speed = 0.9
+        self.crep_speed = 0.5
 
-        self.comb_did_cleanup = 0
+    def default(self):
+        "DEFAULT PARAMETRS"
+        self.done_PSQ1 = True
+        self.status_PSQ1 = False

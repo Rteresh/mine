@@ -25,7 +25,7 @@ class Combine:
         # С левого края
 
         # self.rect.x = float(self.screen_rect.left + self.rect.centerx)
-        self.rect.x = 0
+        self.rect.x = 700
         self.rect.y = float(conveer.rect.y - self.rect.height)
 
         self.centerx = float(self.rect.x)
