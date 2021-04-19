@@ -28,6 +28,7 @@ def update_screen(combine, screen, mine_settings, crep, conveer, creps, conveers
     for one_crep in creps:
         one_crep.blitme()
     start_automatic(mine_settings, combine, creps, conveers)
+    combine_update_y(combine, conveers)
 
 
 def check_all_param(event, settings, screen, combine, creps, conveers):
@@ -36,7 +37,8 @@ def check_all_param(event, settings, screen, combine, creps, conveers):
         print(f'позиция комбайна{settings.combine_position}')
         print(f'направление комбайна:{combine.direction}')
         print(f'достиг ВШ2:{combine.check_point}')
-        print(f'rect conveer:{conveers[1].rect.centery}')
+        print(f'crep.rect.top:{conveers[20].rect.centery}')
+        print(f'conveer.rect.centry{creps[20].rect.top}')
 
 
 def restart(event, conveers, creps):
@@ -86,54 +88,70 @@ def check_position_combine(settings, creps, combine):
 
 
 def start_automatic(settings, combine, creps, conveers):
-    check_automatic(settings, combine)
+    check_status_automatic(settings, combine)
     start_PSQ1(settings, creps, conveers)
     start_PSQ2(settings, creps, conveers)
     start_PSQ3(settings, creps, conveers)
+    start_DA1(settings, creps, conveers)
 
 
 def start_PSQ1(settings, creps, conveers):
     """Запуск передвижки секции на конецевых участках"""
-    if settings.status_PSQ1 and settings.done_PSQ1:
+    if settings.status_PSQ1 and settings.done_PSQ2:
         i = -settings.start_end_PSQ1
         end_PSQ1 = (len(creps)) - settings.num_comb_to_crep_to_start_PSQ1
         if creps[i].rect.top > conveers[i].rect.centery:
             creps[i].update_y()
         else:
+            print(f'i = {i}')
             settings.start_end_PSQ1 += 1
         if end_PSQ1 == settings.start_end_PSQ1:
-            settings.done_PSQ1 = False
+            settings.done_PSQ1 = True
             settings.status_PSQ1 = False
-            settings.end_PSQ1 = 1
+            settings.default()
 
 
 def start_PSQ2(settings, creps, conveers):
     """Запуск передвижки секций определенно заданой в группе """
-    if settings.status_PSQ2 and settings.done_PSQ2:
+    if settings.status_PSQ2 and not settings.done_PSQ2:
         i = settings.start_end_PSQ2
         if creps[i].rect.top > conveers[i].rect.centery:
             creps[i].update_y()
         else:
+            print(f'iPSQ2 =  {i}')
+            if i == - 20:
+                print(f'end_PSQ2 = {settings.end_PSQ2}')
+                print(f'start_end_PSQ2 = {settings.start_end_PSQ2}')
             settings.start_end_PSQ2 -= 1
             if settings.end_PSQ2 == settings.start_end_PSQ2:
-                settings.done_PSQ2 = False
+                print('Я ДОЛЖЕН СРАБОТАТЬ')
+                settings.done_PSQ2 = True
                 settings.status_PSQ2 = False
-                settings.end_PSQ2 = 1
+                settings.default()
 
 
 def start_PSQ3(settings, creps, conveers):
     """Запуск передвижки секции относительно комбайна"""
-    if settings.status_PSQ3:
+    if settings.status_PSQ3 and settings.done_PSQ2:
         i = settings.combine_position - settings.distance_between_crep_comb_PSQ
         if creps[i].rect.top > conveers[i].rect.centery:
             creps[i].update_y()
+        if i < 0:
+            print('меньше нуля')
+            settings.status_PSQ3 = False
+            settings.done_PSQ3 = True
 
 
-def start_DA1(settings, creps, converrs):
+def start_DA1(settings, creps, conveers):
     """Запуск передвижки конвейера, не включая концевых операций"""
-    if settings.status_DA1:
-        i = settings.status_DA1 - 1
-        if converrs[i].rect
+    if settings.status_DA1 and settings.done_PSQ3:
+        i = settings.combine_position - settings.distance_between_crep_comb_DA1
+        if conveers[i].rect.centery == creps[i].rect.top:
+            conveers[i].rect.centery = 695
+        if i == 15:
+            settings.status_DA1 = False
+            settings.done_PSQ2 = False
+            settings.pos_turn_PSQ2 = True
 
 
 def start_DA2(settings, creps, conveers):
@@ -146,16 +164,25 @@ def start_DA3(settings, creps, conveers):
     pass
 
 
-def check_automatic(settings, combine):
+def check_status_automatic(settings, combine):
     if settings.combine_position == settings.num_comb_to_crep_to_start_PSQ1:
         if combine.check_point == 1 and combine.direction == 0:
             settings.status_PSQ1 = True
-    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ2:
+    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ2 and settings.pos_turn_PSQ2:
         if combine.check_point == 1 and combine.direction == 0:
             settings.status_PSQ2 = True
+            print("Я включил PSQ2")
+            settings.pos_turn_PSQ2 = False
+
     elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ3:
         if combine.check_point == 1 and combine.direction == 0:
             settings.status_PSQ3 = True
     if settings.combine_position == settings.distance_between_crep_comb_DA1:
         if combine.check_point == 0 and combine.direction == 1:
             settings.status_DA1 = True
+
+
+def combine_update_y(combine, conveers):
+    for conveer in conveers:
+        if combine.rect.collidepoint(conveer.rect.x,conveer.rect.y):
+            combine.update_y(conveer.rect.y)
