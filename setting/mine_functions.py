@@ -37,8 +37,9 @@ def check_all_param(event, settings, screen, combine, creps, conveers):
         print(f'позиция комбайна{settings.combine_position}')
         print(f'направление комбайна:{combine.direction}')
         print(f'достиг ВШ2:{combine.check_point}')
-        print(f'crep.rect.top:{conveers[20].rect.centery}')
-        print(f'conveer.rect.centry{creps[20].rect.top}')
+        print(f'conveer.rect.centery:{conveers[1].rect.centery}')
+        print(f'crep.rect.centry{creps[1].rect.top}')
+        print(f'new_position_cylinder_DA{new_position_cylinder_DA(settings, conveers[1].rect.centery)}')
 
 
 def restart(event, conveers, creps):
@@ -146,12 +147,15 @@ def start_DA1(settings, creps, conveers):
     """Запуск передвижки конвейера, не включая концевых операций"""
     if settings.status_DA1 and settings.done_PSQ3:
         i = settings.combine_position - settings.distance_between_crep_comb_DA1
-        if conveers[i].rect.centery == creps[i].rect.top:
-            conveers[i].rect.centery = 695
-        if i == 15:
-            settings.status_DA1 = False
-            settings.done_PSQ2 = False
-            settings.pos_turn_PSQ2 = True
+        if conveers[i].rect.centery > conveers[i].nc:
+            print(conveers[i].new_position_conv)
+            conveers[i].update_y()
+            if i == 15:
+                settings.status_DA1 = False
+                settings.done_PSQ2 = False
+                settings.pos_turn_PSQ2 = True
+        else:
+            conveers[i].update_new_pos()
 
 
 def start_DA2(settings, creps, conveers):
@@ -184,5 +188,10 @@ def check_status_automatic(settings, combine):
 
 def combine_update_y(combine, conveers):
     for conveer in conveers:
-        if combine.rect.collidepoint(conveer.rect.x,conveer.rect.y):
-            combine.update_y(conveer.rect.y)
+        if combine.rect.collidepoint(conveer.rect.x, conveer.rect.y):
+            combine.update_y(conveer.rect.y - combine.rect.height)
+
+
+def new_position_cylinder_DA(settings, old_position):
+    new_position_cylinder = old_position - settings.range_cylinder
+    return new_position_cylinder

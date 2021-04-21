@@ -1,5 +1,9 @@
+import pygame
+
+
 class Settings:
     def __init__(self):
+        self.dt = pygame.time.Clock()
         """Инициализирует настройки шахты"""
         # Screen settings
         self.screen_name = 'Mine 5-1'
@@ -7,6 +11,7 @@ class Settings:
         self.screen_height = 800
         self.bg_color = (255, 255, 255)
         self.start_end = 1
+        self.fps = 60
 
         # Настройка автоматического режима
         # PSQ1
@@ -15,7 +20,7 @@ class Settings:
         self.done_PSQ1 = False  # True NO WORK False DONE
         self.num_comb_to_crep_to_start_PSQ1 = 16  # До какой секции должен доехать, чтобы включить PSQ1
         # PSQ2
-        self.pos_turn_PSQ2 = True # True если комбайн еще не переступил черту
+        self.pos_turn_PSQ2 = True  # True если комбайн еще не переступил черту
         self.status_PSQ2 = False  # True ON False OFF
         self.done_PSQ2 = False  # True NO WORK False DONE
         self.num_comb_to_crep_to_start_PSQ2 = 20  # До какой секции должен доехать,чтобы включить PSQ2
@@ -46,7 +51,8 @@ class Settings:
         self.crep_speed = 0.5
 
         # Настройка конвейера
-        self.conveer_speed = 0.5
+        self.conveer_speed = 0.1
+        self.range_cylinder = 40
 
     def default(self):
         self.start_end_PSQ2 = 18

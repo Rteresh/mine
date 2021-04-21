@@ -13,10 +13,12 @@ class Conveer:
         self.rect = self.image.get_rect()
 
         self.rect.x = crep.rect.x
-        self.rect.y = crep.rect.y - self.rect.height+5
+        self.rect.y = crep.rect.y - self.rect.height + 5
 
         self.y = float(self.rect.y)
         self.x = float(self.rect.x)
+        self.new_position_conv = self.rect.centery - self.conveer_settins.range_cylinder
+        self.nc = float(self.new_position_conv)
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
@@ -25,4 +27,5 @@ class Conveer:
         self.y -= self.conveer_settins.conveer_speed
         self.rect.y = self.y
 
-
+    def update_new_pos(self):
+        self.new_position_conv = self.rect.centery - self.conveer_settins.range_cylinder
