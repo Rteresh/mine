@@ -12,9 +12,9 @@ class Combine:
         self.crep = crep
 
         #      Zagruzka photo combine
-        # 0 = left 1 = right
+        # 0 = left start = right
         self.direction = 1
-        # 0 = left 1 = right
+        # 0 = left start = right
         self.check_point = 0
 
         self.image = pygame.image.load('templates/combine.jpg')
@@ -26,7 +26,7 @@ class Combine:
 
         # self.rect.x = float(self.screen_rect.left + self.rect.centerx)
         self.rect.x = 0
-        self.rect.y = float(conveer.rect.y - self.rect.height)
+        self.rect.y = float(conveer.rect.y - self.rect.height+4)
 
         self.centerx = float(self.rect.x)
 

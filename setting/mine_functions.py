@@ -2,6 +2,7 @@ import sys
 import pygame
 from mine_objects.crep import Crep
 from mine_objects.conveer import Conveer
+import start.start_position as stt
 
 start_end = 1
 
@@ -37,10 +38,18 @@ def check_all_param(event, settings, screen, combine, creps, conveers):
         print(f'позиция комбайна{settings.combine_position}')
         print(f'направление комбайна:{combine.direction}')
         print(f'достиг ВШ2:{combine.check_point}')
-        print(f'conveer.rect.centery:{conveers[1].rect.centery}')
         print(f'crep.rect.centry{creps[1].rect.top}')
-        print(f'new_position_cylinder_DA{new_position_cylinder_DA(settings, conveers[1].rect.centery)}')
         print(f'done PSQ3 {settings.done_PSQ3}')
+        print(f'done DA1 {settings.done_DA1}')
+        print(f'status DA2 {settings.status_DA2}')
+        print(f'snake_size_rect_centery {conveers[13 + 1].rect.centery - settings.snake_size}')
+        print(f'conv_rect_centery11 {conveers[11].rect.centery}')
+        print(f'conv_rect_centery12 {conveers[12].rect.centery}')
+        print(f'conv_rect_centery18 {conveers[18].rect.centery}')
+        print(f'start_end_da2 {settings.start_end_DA2}')
+        z = 12
+        for i in range(9):
+            print(conveers[z + i].rect.centery)
 
 
 def restart(event, conveers, creps):
@@ -95,6 +104,7 @@ def start_automatic(settings, combine, creps, conveers):
     start_PSQ2(settings, creps, conveers)
     start_PSQ3(settings, creps, conveers)
     start_DA1(settings, creps, conveers)
+    start_DA2(settings, creps, conveers)
 
 
 def start_PSQ1(settings, creps, conveers):
@@ -111,7 +121,6 @@ def start_PSQ1(settings, creps, conveers):
             settings.done_PSQ1 = True
             settings.status_PSQ1 = False
             settings.default()
-            test_snake_size(conveers)
 
 
 def start_PSQ2(settings, creps, conveers):
@@ -150,18 +159,35 @@ def start_DA1(settings, creps, conveers):
     if settings.status_DA1 and not settings.done_PSQ3:
         i = settings.combine_position - settings.distance_between_crep_comb_DA1
         if conveers[i].rect.centery > conveers[i].nc and i >= 0:
-            print(f'сейчас секция ? {i}')
             conveers[i].update_y()
-            if i == 13:
+            if i == settings.amount_conveer_DA1:
                 settings.status_DA1 = False
                 settings.done_PSQ2 = False
+                settings.done_DA1 = True
                 settings.pos_turn_PSQ2 = True
                 conveers[i].update_new_pos()
 
 
 def start_DA2(settings, creps, conveers):
     """Запуск передвижки конвейера, установка косого заезда"""
+    if settings.status_DA2 and settings.done_DA1:
+        i = settings.start_end_DA2
+        if conveers[i].rect.centery > conveers[i - 1].rect.centery + settings.snake_size:
+            print(f'____________i = {i + 1} :{conveers[i - 1].rect.centery - settings.snake_size}')
+            print(conveers[i].rect.centery)
+            conveers[i].update_snake()
+        else:
+            settings.start_end_DA2 += 1
+            if i == settings.end_DA2:
+                settings.status_DA2 = False
+                settings.done_DA2 = True
+                settings.start_end_DA2 = 13
 
+
+def start_DA2_n(settings, conveers):
+    """Запуск передвижки коневейера, новая коссая"""
+    if settings.start_end_DA3 and settings.done_DA2:
+        pass
 
 
 def start_DA3(settings, creps, conveers):
@@ -170,10 +196,10 @@ def start_DA3(settings, creps, conveers):
 
 
 def check_status_automatic(settings, combine):
-    if settings.combine_position == settings.num_comb_to_crep_to_start_PSQ1:
-        if combine.check_point == 1 and combine.direction == 0:
-            settings.status_PSQ1 = True
-    elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ2 and settings.pos_turn_PSQ2:
+    # if settings.combine_position == settings.num_comb_to_crep_to_start_PSQ1:
+    #     if combine.check_point == start and combine.direction == 0:
+    #         settings.status_PSQ1 = True
+    if settings.combine_position == settings.num_comb_to_crep_to_start_PSQ2 and settings.pos_turn_PSQ2:
         if combine.check_point == 1 and combine.direction == 0:
             settings.status_PSQ2 = True
             print("Я включил PSQ2")
@@ -182,11 +208,16 @@ def check_status_automatic(settings, combine):
     elif settings.combine_position == settings.num_comb_to_crep_to_start_PSQ3:
         if combine.check_point == 1 and combine.direction == 0:
             settings.status_PSQ3 = True
-    if settings.combine_position == settings.distance_between_crep_comb_DA1:
+    elif settings.combine_position == settings.distance_between_crep_comb_DA1:
         if combine.check_point == 0 and combine.direction == 1:
             settings.status_DA1 = True
     if settings.combine_position == settings.distance_between_crep_comb_DA2:
-        pass
+        if combine.check_point == 0 and combine.direction == 1:
+            settings.status_DA2 = True
+
+
+    if settings.combine_position == settings.
+
 
 def combine_update_y(combine, conveers):
     for conveer in conveers:
@@ -197,12 +228,3 @@ def combine_update_y(combine, conveers):
 def new_position_cylinder_DA(settings, old_position):
     new_position_cylinder = old_position - settings.range_cylinder
     return new_position_cylinder
-
-
-def test_snake_size(conveers):
-    conveers[17].rect.centery = 701
-    conveers[16].rect.centery = 695
-    conveers[15].rect.centery = 689
-    conveers[14].rect.centery = 683
-    conveers[13].rect.centery = 677
-
