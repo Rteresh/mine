@@ -18,14 +18,14 @@ class Settings:
         self.start_end_PSQ1 = 1
         self.status_PSQ1 = False  # True ON False OFF
         self.done_PSQ1 = False  # True NO WORK False DONE
-        self.num_comb_to_crep_to_start_PSQ1 = 16  # До какой секции должен доехать, чтобы включить PSQ1
+        self.num_comb_to_crep_to_start_PSQ1 = 14  # До какой секции должен доехать, чтобы включить PSQ1
         # PSQ2
         self.pos_turn_PSQ2 = True  # True если комбайн еще не переступил черту
         self.status_PSQ2 = False  # True ON False OFF
         self.done_PSQ2 = False  # True NO WORK False DONE
-        self.num_comb_to_crep_to_start_PSQ2 = 20  # До какой секции должен доехать,чтобы включить PSQ2
+        self.num_comb_to_crep_to_start_PSQ2 = 19  # До какой секции должен доехать,чтобы включить PSQ2
         self.amount_crep_PSQ2 = 10
-        self.start_end_PSQ2 = 18  # Начало с какой секции должно пойти
+        self.start_end_PSQ2 = 14  # Начало с какой секции должно пойти
         self.end_PSQ2 = self.start_end_PSQ2 - self.amount_crep_PSQ2
         # PSQ3
         self.status_PSQ3 = False
@@ -41,6 +41,7 @@ class Settings:
 
         # DA2
         self.status_DA2 = False
+        self.distance_between_crep_comb_DA2 = 19
         # DA3
         self.status_DA3 = False
         # Настройки комбайна
@@ -51,8 +52,8 @@ class Settings:
         self.crep_speed = 0.5
 
         # Настройка конвейера
-        self.conveer_speed = 0.1
-        self.range_cylinder = 40
+        self.conveer_speed = 0.5
+        self.range_cylinder = 30
 
     def default(self):
         self.start_end_PSQ2 = 18

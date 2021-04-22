@@ -40,6 +40,7 @@ def check_all_param(event, settings, screen, combine, creps, conveers):
         print(f'conveer.rect.centery:{conveers[1].rect.centery}')
         print(f'crep.rect.centry{creps[1].rect.top}')
         print(f'new_position_cylinder_DA{new_position_cylinder_DA(settings, conveers[1].rect.centery)}')
+        print(f'done PSQ3 {settings.done_PSQ3}')
 
 
 def restart(event, conveers, creps):
@@ -110,6 +111,7 @@ def start_PSQ1(settings, creps, conveers):
             settings.done_PSQ1 = True
             settings.status_PSQ1 = False
             settings.default()
+            test_snake_size(conveers)
 
 
 def start_PSQ2(settings, creps, conveers):
@@ -145,22 +147,21 @@ def start_PSQ3(settings, creps, conveers):
 
 def start_DA1(settings, creps, conveers):
     """Запуск передвижки конвейера, не включая концевых операций"""
-    if settings.status_DA1 and settings.done_PSQ3:
+    if settings.status_DA1 and not settings.done_PSQ3:
         i = settings.combine_position - settings.distance_between_crep_comb_DA1
-        if conveers[i].rect.centery > conveers[i].nc:
-            print(conveers[i].new_position_conv)
+        if conveers[i].rect.centery > conveers[i].nc and i >= 0:
+            print(f'сейчас секция ? {i}')
             conveers[i].update_y()
-            if i == 15:
+            if i == 13:
                 settings.status_DA1 = False
                 settings.done_PSQ2 = False
                 settings.pos_turn_PSQ2 = True
-        else:
-            conveers[i].update_new_pos()
+                conveers[i].update_new_pos()
 
 
 def start_DA2(settings, creps, conveers):
     """Запуск передвижки конвейера, установка косого заезда"""
-    pass
+
 
 
 def start_DA3(settings, creps, conveers):
@@ -184,7 +185,8 @@ def check_status_automatic(settings, combine):
     if settings.combine_position == settings.distance_between_crep_comb_DA1:
         if combine.check_point == 0 and combine.direction == 1:
             settings.status_DA1 = True
-
+    if settings.combine_position == settings.distance_between_crep_comb_DA2:
+        pass
 
 def combine_update_y(combine, conveers):
     for conveer in conveers:
@@ -195,3 +197,12 @@ def combine_update_y(combine, conveers):
 def new_position_cylinder_DA(settings, old_position):
     new_position_cylinder = old_position - settings.range_cylinder
     return new_position_cylinder
+
+
+def test_snake_size(conveers):
+    conveers[17].rect.centery = 701
+    conveers[16].rect.centery = 695
+    conveers[15].rect.centery = 689
+    conveers[14].rect.centery = 683
+    conveers[13].rect.centery = 677
+

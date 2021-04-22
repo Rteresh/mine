@@ -13,7 +13,7 @@ class Conveer:
         self.rect = self.image.get_rect()
 
         self.rect.x = crep.rect.x
-        self.rect.y = crep.rect.y - self.rect.height + 5
+        self.rect.y = crep.rect.y - 32
 
         self.y = float(self.rect.y)
         self.x = float(self.rect.x)
@@ -29,3 +29,4 @@ class Conveer:
 
     def update_new_pos(self):
         self.new_position_conv = self.rect.centery - self.conveer_settins.range_cylinder
+        self.nc = self.new_position_conv
