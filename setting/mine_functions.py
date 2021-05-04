@@ -216,7 +216,7 @@ def check_status_automatic(settings, combine):
             settings.status_DA2 = True
 
 
-    if settings.combine_position == settings.
+    
 
 
 def combine_update_y(combine, conveers):
@@ -228,3 +228,6 @@ def combine_update_y(combine, conveers):
 def new_position_cylinder_DA(settings, old_position):
     new_position_cylinder = old_position - settings.range_cylinder
     return new_position_cylinder
+
+def helo():
+    print('adasd')
